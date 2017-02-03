@@ -214,7 +214,17 @@ class Jbp_Mercadopago_Model_Cc extends Mage_Payment_Model_Method_Cc {
             ]
         ];
         
+        Mage::dispatchEvent('mp_before_send_prepare_data', $data);
+        
         return $payment_data;
+    }
+    
+    public function validate(){
+        
+        Mage::dispatchEvent('mp_before_validate', $this);
+        
+        return parent::validate();
+        
     }
     
     /**
@@ -227,10 +237,14 @@ class Jbp_Mercadopago_Model_Cc extends Mage_Payment_Model_Method_Cc {
             
             $data = $this->prepareDataBeforeSend();
             
+            Mage::dispatchEvent('mp_before_send_pay', $data);
+            
             $payment = $this->_getHelper()
                             ->getClient()
                             ->post("/v1/payments", $data);
             
+            Mage::dispatchEvent('mp_after_send_pay', $payment);
+                            
             return $payment;
                             
         }catch(Exception $e){

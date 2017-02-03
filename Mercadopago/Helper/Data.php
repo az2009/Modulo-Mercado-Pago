@@ -13,6 +13,7 @@ class Jbp_Mercadopago_Helper_Data extends Mage_Payment_Helper_Data {
             return $mp;            
         }catch(Exception $e){
             Mage::log($e->getMessage());
+            Mage::throwException($this->getMsgError('500'));
         }
     }
     
@@ -25,6 +26,9 @@ class Jbp_Mercadopago_Helper_Data extends Mage_Payment_Helper_Data {
      * @return string[]|NULL[]
      */
     public function prepareDataCard($info, $amount = null){
+        
+        Mage::dispatchEvent('mp_before_prepare_data_card_info', $info);
+        Mage::dispatchEvent('mp_before_prepare_data_card_amount', $amount);
         
         return [
             'amount' => (double)$amount,
@@ -53,18 +57,22 @@ class Jbp_Mercadopago_Helper_Data extends Mage_Payment_Helper_Data {
         
         try{
             
+            Mage::dispatchEvent('mp_before_generate_token', $data);
+            
             $response = $this->getClient()
                               ->post('/v1/card_tokens/?public_key='.$this->getPublickey(),
                                     json_encode($data->getData(),true));
             
+            Mage::dispatchEvent('mp_after_generate_token', $data);
+                              
             if(count($response))
                 $response = new Varien_Object($response);
-                              
+            
             if($response->getStatus() != 200 && 
                     $response->getStatus() != 201 && 
                         !empty($response->getResponse()['id']))
                                 throw new Exception('fail generate token');
-            
+                                
             return $response->getResponse();
             
         }catch(Exception $e){
