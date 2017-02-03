@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!-- configurações do módulo -->
+<config>
+    <modules>
+        <Jbp_Mercadopago>
+            <version>1.0.0.0</version>
+        </Jbp_Mercadopago>
+    </modules>
+    
+    <!-- configurações visiveis apenas no frontend -->
+    <frontend>
+    
+    	<!-- difinindo a rota -->
+	    <routers>
+	    	<mercadopago>
+		        <use>standard</use>
+		        <args>
+		            <module>Jbp_Mercadopago</module>
+		            <frontName>mercadopago</frontName>
+		        </args>
+	        </mercadopago>
+	    </routers>
+	    
+	    <!-- definindo o arquivo de layout -->
+	    <layout>
+             <updates>
+                  <mercadopago>
+                        <file>mercadopago.xml</file>
+                  </mercadopago>
+             </updates>
+        </layout>
+        
+    </frontend>
+    
+    <!-- configurações globais -->
+    <global>   
+    
+    	<!-- defininco a namespace das helpers-->
+	    <helpers>
+    		<mercadopago>
+    			<class>Jbp_Mercadopago_Helper</class>
+   			</mercadopago>
+    	</helpers>
+        
+        <!-- defininco a namespace das models-->
+        <models>
+            <mercadopago>
+                <class>Jbp_Mercadopago_Model</class>
+            </mercadopago>            
+        </models>
+        
+        <!-- defininco a namespace dos blocks-->
+        <blocks>
+            <mercadopago>
+                <class>Jbp_Mercadopago_Block</class>
+            </mercadopago>
+        </blocks>       
+		
+		<!-- defininco o resource de instalação -->  
+        <resources>
+	      <mercadopago_setup>
+	        <setup>
+	      	    <module>Jbp_Mercadopago</module>
+	        </setup>
+	      </mercadopago_setup>	      
+	    </resources>
+	    
+    </global>
+    
+    <!-- Ativando o módulo de pagamento e passando as informações default para system/config/payment/mercadopago -->
+    <default>
+	     <payment>
+		      
+		      <mercadopago>
+		        <active>1</active>
+		        <model>mercadopago/cc</model>
+		        <order_status>pending</order_status>
+		        <title>Mercado Pago</title>
+		        <allowspecific>0</allowspecific>
+		        <payment_action>sale</payment_action>
+		      </mercadopago>
+		      
+		      <mercadopago_comum>
+		        <active>0</active>
+		        <model>mercadopago/mercadopago</model>
+		        <order_status>pending</order_status>
+		        <title>Mercado Pago Comum</title>
+		        <allowspecific>0</allowspecific>
+		        <payment_action>sale</payment_action>
+		      </mercadopago_comum>
+		      
+		      <mercadopago_recorrente>
+		        <active>0</active>
+		        <model>mercadopago/recorrente</model>
+		        <order_status>pending</order_status>
+		        <title>Mercado Pago Recorrente</title>
+		        <allowspecific>0</allowspecific>
+		        <payment_action>sale</payment_action>
+		      </mercadopago_recorrente>
+		      
+	     </payment>		     
+	</default>
+	      
+</config>
